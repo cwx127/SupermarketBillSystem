@@ -106,26 +106,24 @@ public class SupplierDialog extends JDialog{
         add ( panel );
     }
 
-        private void loadSupplierData(int id) {
-            // 查询所有用户，找到匹配ID的用户
-        List< Supplier > suppliers = supplierDao.findAll();
+    private void loadSupplierData(int id) {
+        List<Supplier> suppliers = supplierDao.findAll();
         Supplier supplier = null;
         for (Supplier s : suppliers) {
-            if (s.getSupplier_id () == id) {
+            if (s.getSupplier_id() == id) {
                 supplier = s;
                 break;
-                }
-            }
-
-            //如果找到供应商，填充表单数据
-            if (supplier != null){
-            txtsuppliername.setText ( supplier.getName () );
-            txtdescription.setText ( supplier.getDescription () );
-            txtcontact.setText ( supplier.getContact () );
-            txtphone.setText ( supplier.getPhone () );
-            txtaddress.setText ( supplier.getAddress () );
             }
         }
+
+        if (supplier != null){
+            txtsuppliername.setText(supplier.getName());
+            txtdescription.setText(supplier.getDescription());
+            txtcontact.setText(supplier.getContact());
+            txtphone.setText(supplier.getPhone());
+            txtaddress.setText(supplier.getAddress());
+        }
+    }
 
     private void saveSupplier(){
         String suppliername = txtsuppliername.getText ().trim ();

@@ -86,7 +86,7 @@ public class SupplierPanel extends JPanel {
     private void loadData(){
         String suppliername = txtSupplierName.getText ().trim ();
 
-        List<Supplier> suppliers = supplierDao.findAll();
+        List<Supplier> suppliers = supplierDao.search(suppliername);
 
         tableModel.setRowCount ( 0 );
 

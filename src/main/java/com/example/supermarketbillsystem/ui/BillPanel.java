@@ -197,35 +197,70 @@ public class BillPanel extends JPanel {
     private void exportData(){
         JFileChooser chooser = new JFileChooser ();
         chooser.setDialogTitle ( "选择保存位置" );
-        int result = chooser.showSaveDialog ( this );// 弹出「保存文件」弹窗
-        if (result != JFileChooser.APPROVE_OPTION) return;// 用户点取消/关闭窗口，直接退出方法
+        int result = chooser.showSaveDialog ( this );
+        if (result != JFileChooser.APPROVE_OPTION) return;
 
         File file = chooser.getSelectedFile ();
-        //带资源自动关闭的IO流 try-with-resources
         try (PrintWriter writer = new PrintWriter ( file )){
-            writer.println ("账单ID，商品名称，数量，金额，供应商，是否付款，商品描述，交易时间");
+            String[] headers = {"账单ID", "商品名称", "数量", "金额", "供应商", "是否付款", "商品描述", "交易时间"};
+            int[] widths = {8, 20, 6, 10, 12, 8, 20, 18};
+
+            printLine(writer, widths);
+            printRow(writer, headers, widths);
+            printLine(writer, widths);
 
             int[] selectedRows = table.getSelectedRows ();
             if(selectedRows.length > 0){
                 for (int row : selectedRows){
-                    writer.println (getRowData(row));
+                    Object[] data = new Object[tableModel.getColumnCount()];
+                    for(int i = 0; i < data.length; i++){
+                        data[i] = tableModel.getValueAt(row, i);
+                    }
+                    printRow(writer, data, widths);
+                }
+            } else {
+                for (int row = 0; row < tableModel.getRowCount(); row++){
+                    Object[] data = new Object[tableModel.getColumnCount()];
+                    for(int i = 0; i < data.length; i++){
+                        data[i] = tableModel.getValueAt(row, i);
+                    }
+                    printRow(writer, data, widths);
                 }
             }
+            printLine(writer, widths);
 
             JOptionPane.showMessageDialog ( this,"导出成功" );
         } catch (IOException e){
             e.printStackTrace ();
-            //IO异常捕获：权限不足、路径非法、磁盘满等
             JOptionPane.showMessageDialog ( this,"导出失败","错误",JOptionPane.INFORMATION_MESSAGE );
         }
     }
 
-    private String getRowData(int row){
-        StringBuilder sb = new StringBuilder ();
-        for(int i = 0; i < tableModel.getColumnCount (); i++){
-            sb.append ( tableModel.getValueAt ( row,i )).append ( "," );
+    private void printLine(PrintWriter writer, int[] widths){
+        StringBuilder sb = new StringBuilder("+");
+        for(int w : widths){
+            sb.append("-".repeat(w + 2));
+            sb.append("+");
         }
-        return sb.toString ();
+        writer.println(sb.toString());
+    }
+
+    private void printRow(PrintWriter writer, Object[] data, int[] widths){
+        StringBuilder sb = new StringBuilder("|");
+        for(int i = 0; i < data.length; i++){
+            String value = data[i] != null ? data[i].toString() : "";
+            if(value.length() > widths[i]){
+                value = value.substring(0, widths[i]);
+            }
+            sb.append(String.format(" %-" + widths[i] + "s |", value));
+        }
+        writer.println(sb.toString());
+    }
+
+    private void printRow(PrintWriter writer, String[] data, int[] widths){
+        Object[] objData = new Object[data.length];
+        System.arraycopy(data, 0, objData, 0, data.length);
+        printRow(writer, objData, widths);
     }
 
     }

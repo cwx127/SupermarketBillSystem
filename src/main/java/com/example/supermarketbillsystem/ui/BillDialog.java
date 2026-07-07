@@ -258,9 +258,9 @@ public class BillDialog extends JDialog{
                 JOptionPane.showMessageDialog(this, "交易金额不能为空！", "提示", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            int num2;
+            double num2;
             try {
-                num2 = Integer.parseInt(amount);
+                num2 = Double.parseDouble(amount);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "交易金额必须是数字！", "提示", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -283,7 +283,7 @@ public class BillDialog extends JDialog{
             bill.setProduct_name ( product_name );
             bill.setQuantity(Integer.parseInt(quality.trim() ) );
             bill.setUnit ( unit );
-            bill.setAmount ( Integer.parseInt ( amount.trim () ) );
+            bill.setAmount ( Double.parseDouble ( amount.trim () ) );
             bill.setIsPaid ( cmbIsPaid.getSelectedIndex () == 0 ? 1 : 0 );
             Supplier sup = (Supplier) cmbSupplier.getSelectedItem();
             bill.setSupplierId(sup.getSupplier_id());
@@ -310,10 +310,10 @@ public class BillDialog extends JDialog{
         }
 
         /**
-         * 获取保存状态
-         * @return true表示用户点击了保存并成功，false表示取消或保存失败
-         */
-        public boolean isSaved() {
-            return saved;
-        }
+     * 获取保存状态
+     * @return true表示用户点击了保存并成功，false表示取消或保存失败
+     */
+    public boolean isSaved() {
+        return saved;
     }
+}

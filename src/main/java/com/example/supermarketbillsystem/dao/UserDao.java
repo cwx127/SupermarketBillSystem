@@ -180,7 +180,6 @@ public class UserDao {
             conn = DBUtil.getConnection();
             
             // SQL语句：插入用户记录
-            // 注意：create_time字段由数据库自动生成（DEFAULT CURRENT_TIMESTAMP），不需要手动插入
             String sql = "INSERT INTO \"USER\" (username, password, role, sex, age, phonenumber, address) VALUES(?, ?, ?, ?, ?, ?, ?)";
             ps = conn.prepareStatement(sql);
             

@@ -83,7 +83,6 @@ public class MainFrame extends JFrame{
         btnReport.addActionListener(e -> showReportPanel());
         btnExit.addActionListener(e -> exitSystem());
     }
-    //画饼
     private void showBillPanel() {
         rightPanel.removeAll();
         rightPanel.add(new BillPanel(), BorderLayout.CENTER);

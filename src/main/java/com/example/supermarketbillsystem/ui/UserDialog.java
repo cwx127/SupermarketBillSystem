@@ -3,7 +3,6 @@ package com.example.supermarketbillsystem.ui;
 import com.example.supermarketbillsystem.dao.UserDao;
 import com.example.supermarketbillsystem.entity.User;
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 /**

@@ -107,24 +107,34 @@ public class BillDao {
     public boolean add(Bill bill){
         Connection conn = null;
         PreparedStatement ps = null;
+        ResultSet rs = null;
 
         try {
             conn = DBUtil.getConnection ();
-            String sql = "INSERT INTO bill (product_name,quantity,unit,amount,supplier_id,is_paid,description) VALUES(?,?,?,?,?,?,?)";
+            String sql = "SELECT MAX(id) FROM bill";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, bill.getProduct_name());
-            ps.setInt(2, bill.getQuantity());
-            ps.setString(3, bill.getUnit());
-            ps.setDouble(4, bill.getAmount());
-            ps.setInt(5, bill.getSupplierId());
-            ps.setInt(6, bill.getIsPaid());
-            ps.setString(7, bill.getDescription());
+            rs = ps.executeQuery();
+            int nextId = 1;
+            if (rs.next()) {
+                nextId = rs.getInt(1) + 1;
+            }
+
+            sql = "INSERT INTO bill (id, product_name, quantity, unit, amount, supplier_id, is_paid, description) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, nextId);
+            ps.setString(2, bill.getProduct_name());
+            ps.setInt(3, bill.getQuantity());
+            ps.setString(4, bill.getUnit());
+            ps.setDouble(5, bill.getAmount());
+            ps.setInt(6, bill.getSupplierId());
+            ps.setInt(7, bill.getIsPaid());
+            ps.setString(8, bill.getDescription());
 
             return ps.executeUpdate () > 0;
         }catch (SQLException e){
             e.printStackTrace ();
         }finally {
-            DBUtil.close ( conn,ps,null );//三参数方法
+            DBUtil.close ( conn,ps,rs );
         }
         return false;
     }

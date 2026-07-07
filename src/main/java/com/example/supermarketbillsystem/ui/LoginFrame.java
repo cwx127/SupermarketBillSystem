@@ -3,7 +3,6 @@ package com.example.supermarketbillsystem.ui;
 import com.example.supermarketbillsystem.dao.UserDao;//数据库操作类
 import com.example.supermarketbillsystem.entity.User;//封装数据库实体类
 import javax.swing.*;//窗口布局
-import java.awt.*;//窗口布局
 import java.awt.event.*;//点击事件
 
 //创建输入框
